@@ -1,0 +1,21 @@
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+#+OPTIONS: toc:nil
+
+* Personal TODO list
+** Bachelor
+*** Präsentation
+*** MRT
+*** ANATOMIE
+** nixpkgs
+*** contour
+- [[https://github.com/christianparpart/contour][source]]: https://github.com/christianparpart/contour
+- [[https://github.com/christianparpart/libunicode.git][submodule]]: https://github.com/christianparpart/libunicode.git
+*** tensorman
+- [[https://github.com/pop-os/tensorman][source]]: https://github.com/pop-os/tensorman
+** snap
+*** tetris
+- [[https://github.com/samtay/tetris][source]]: https://github.com/samtay/tetris
+** OS
+** Programming
+*** Java
