@@ -17,5 +17,10 @@
 *** tetris
 - [[https://github.com/samtay/tetris][source]]: https://github.com/samtay/tetris
 ** OS
+*** NixOS
+**** ZFS
+- [[https://nixos.wiki/wiki/NixOS_on_ZFS][tutourial]]
+**** VM with virglrender
 ** Programming
 *** Java
+*** Go
