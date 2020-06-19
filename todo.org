@@ -5,8 +5,12 @@
 * Personal TODO list
 ** Bachelor
 *** Präsentation
+- [] done
+- [] test
 *** MRT
+- [X]
 *** ANATOMIE
+- [] done
 ** nixpkgs
 *** contour
 - [[https://github.com/christianparpart/contour][source]]: https://github.com/christianparpart/contour
