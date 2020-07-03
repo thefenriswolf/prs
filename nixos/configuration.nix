@@ -22,6 +22,7 @@
 
   networking.hostName = "nixos"; # Define your hostname.
   networking.hostId = "994d9128";
+  networking.networkmanager.enable = true;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
@@ -56,23 +57,32 @@
     git
     curl
     android-file-transfer
+
     # dev
     go
     tinygo
+    nixfmt
+
     # base cli
     coreutils
     man
     emacs
     htop
     tmux
-    ffmpeg
+    tree
+    file
+
     # multimedia
     cmus
     mpv
+    ffmpeg
+    firefox
+
     # virt
     qemu
     virglrenderer
     virt-manager
+
     # debug
     strace
     python38Packages.glances
@@ -112,6 +122,13 @@
   services.xserver.layout = "de";
   services.xserver.xkbOptions = "de:nodeadkeys";
 
+  hardware.opengl = {
+    enable = true;
+    driSupport32Bit = true;
+  };
+
+  #videoDrivers = ["amdgpu"];
+  
   # Enable touchpad support.
   services.xserver.libinput.enable = true;
 
@@ -151,6 +168,7 @@
       "zfs"
       "networkmanager"
       "systemd-journal"
+      "docker"
     ];
   };
 

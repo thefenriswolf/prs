@@ -7,7 +7,7 @@
   imports = [ ];
 
   boot.initrd.availableKernelModules =
-    [ "ata_piix" "floppy" "sd_mod" "sr_mod" "zfs" ];
+    [ "ata_piix" "floppy" "sd_mod" "sr_mod" "zfs" "nvme" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
   boot.extraModulePackages = [ ];
@@ -35,5 +35,6 @@
   swapDevices = [{ device = "/dev/md127"; }];
 
   nix.maxJobs = lib.mkDefault 2;
+ # hardware.cpu.intel.updateMicrocode = true;
  # virtualisation.hypervGuest.enable = true;
 }
