@@ -1,5 +1,7 @@
-| Matze | Waller         | Andi | Stefan |
-|-------+----------------+------+--------|
-|       | zi zi (cc)     |      |        |
-|       | ka sai (kaisa) |      |        |
-|       |                |      |        |
+| Datum | Wallner             | Matze | Andi | Stefan |
+|-------+---------------------+-------+------+--------|
+|       | zi zi (cc)          |       |      |        |
+|       | ka sai (kaisa)      |       |      |        |
+|       | papatail (cocktail) |       |      |        |
+|       |                     |       |      |        |
+|       |                     |       |      |        |
