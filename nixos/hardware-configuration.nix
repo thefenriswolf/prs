@@ -9,7 +9,8 @@
   boot.initrd.availableKernelModules =
     [ "ata_piix" "floppy" "sd_mod" "sr_mod" "zfs" "nvme" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
+  boot.kernelModules = [ "kvm-amd" "kvm-intel" "vfio-pci" ];
+  boot.blacklistedKernelModules = [ "nouveau" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {

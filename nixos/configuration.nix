@@ -17,7 +17,11 @@
   boot.loader.grub.zfsSupport = true;
   boot.supportedFilesystems = [ "zfs" "xfs" "ext4" ];
   boot.zfs.enableUnstable = true;
-  boot.kernelParams = [ "elevator=none" ];
+  boot.kernelParams = [
+    "elevator=none"
+    "intel_iommu=on"
+    "amd_iommu=on"
+  ];
   boot.loader.grub.devices = [ "/dev/sda" "/dev/sdb" ];
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -44,6 +48,7 @@
   # Set your time zone.
   time.timeZone = "Europe/Vienna";
 
+  # kernel level debugging with bpf
   programs.bcc.enable = true;
 
   # List packages installed in system profile. To search, run:
@@ -98,6 +103,7 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  # ZFS
   services.zfs.autoScrub.enable = true;
   services.zfs.autoScrub.interval = "monthly";
   services.zfs.autoScrub.pools = [ "rpool" ];
@@ -156,6 +162,22 @@
   # nix
   nixpkgs.config.allowUnfree = true;
   nix.useSandbox = true;
+
+  # netdata system monitoring
+  services.netdata.enable = true;
+  services.netdata.config = # dont forget to create a dataset with a quota for this
+  ''
+    [global]
+    memory mode = dbengine
+    cache directory = /var/cache/netdata
+    history = 3600
+    update every = 30
+  '';
+  services.netdata.python.extraPackages = ''
+    ps: [
+      ps.docker
+    ]
+  '';
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.stefan = {
