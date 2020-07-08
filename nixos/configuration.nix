@@ -20,8 +20,7 @@
   boot.kernelParams = [
     "elevator=none"
     "intel_iommu=on"
-    "amd_iommu=on"
-  ];
+    "amd_iommu=on" ];
   boot.loader.grub.devices = [ "/dev/sda" "/dev/sdb" ];
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -131,10 +130,11 @@
   hardware.opengl = {
     enable = true;
     driSupport32Bit = true;
+    driSupport = true;
   };
 
-  #videoDrivers = ["amdgpu"];
-  
+  #services.xserver.videoDrivers = ["amdgpu"];
+
   # Enable touchpad support.
   services.xserver.libinput.enable = true;
 
@@ -165,15 +165,16 @@
 
   # netdata system monitoring
   services.netdata.enable = true;
-  services.netdata.config = # dont forget to create a dataset with a quota for this
+  services.netdata.config = # don't forget to create a dataset with a 1G quota for this
+    ''
+      [global]
+      memory mode = dbengine
+      cache directory = /var/cache/netdata
+      history = 3600
+      update every = 30
+    '';
+  services.netdata.python.extraPackages =
   ''
-    [global]
-    memory mode = dbengine
-    cache directory = /var/cache/netdata
-    history = 3600
-    update every = 30
-  '';
-  services.netdata.python.extraPackages = ''
     ps: [
       ps.docker
     ]

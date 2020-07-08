@@ -19,23 +19,30 @@
   };
 
   fileSystems."/boot" = {
-    device = "rpool/boot";
+    device = "rpool/root/boot";
     fsType = "zfs";
   };
 
   fileSystems."/home" = {
-    device = "rpool/home";
+    device = "rpool/root/home";
     fsType = "zfs";
+  };
+  
+  fileSystems."var/cache/netdata" = {
+    device = "rpool/root/netdata";
+    fstype = "zfs";
   };
 
   fileSystems."/nix" = {
-    device = "rpool/local/nix";
+    device = "rpool/nix";
     fsType = "zfs";
   };
 
   swapDevices = [{ device = "/dev/md127"; }];
 
   nix.maxJobs = lib.mkDefault 2;
- # hardware.cpu.intel.updateMicrocode = true;
- # virtualisation.hypervGuest.enable = true;
+  # hardware.cpu.intel.updateMicrocode = true;
+  # hardware.cpu.amd.updateMicrocode = true;
+  # hardware.enableRedistributableFirmware = true;
+  # virtualisation.hypervGuest.enable = true;
 }
