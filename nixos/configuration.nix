@@ -101,6 +101,9 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  
+  # bpf debugging
+  programs.bcc.enable = true;
 
   # ZFS
   services.zfs.autoScrub.enable = true;
@@ -164,22 +167,28 @@
   nix.useSandbox = true;
 
   # netdata system monitoring
-  services.netdata.enable = true;
-  services.netdata.config = # don't forget to create a dataset with a 1G quota for this
-    ''
-      [global]
-      memory mode = dbengine
-      cache directory = /var/cache/netdata
-      history = 3600
-      update every = 30
-    '';
-  services.netdata.python.extraPackages =
-  ''
-    ps: [
-      ps.docker
-    ]
-  '';
+   services.netdata.enable = true;
+   services.netdata.config = {
+     global = {
+      "memory mode" = "dbengine";
+      "cache directory" = "/var/cache/netdata";
+      "history" = "86400";
+      "update every" = "2";
+      "dbengine disk space" = "2000";
+      "timezone" = "Europe/Vienna";
+      };
+    };
+    
+   #services.netdata.python.extraPackages = "ps: [ps.docker]";
+   services.netdata.group = "netdata";
+   services.netdata.python.enable = true;
+   
+  # firmware
+   #hardware.cpu.intel.updateMicrocode = true;
+   #hardware.cpu.amd.updateMicrocode = true;
+    hardware.enableRedistributableFirmware = true;
 
+  
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.stefan = {
     isNormalUser = true;
