@@ -71,9 +71,9 @@
     go
     tinygo
     nixfmt
+    gh
     hlint
     kate
-    #vscodium
 
     # reverse engineering
     radare2-cutter
@@ -85,12 +85,8 @@
     unoconv
     libreoffice
     skanlite
-    #wpsoffice
     thunderbird
-    #discord
-    #teams
     openconnect
-    #zoom-us
 
     # base cli
     coreutils
@@ -113,7 +109,6 @@
     cmus
     mpv
     vlc
-    #blender
     gwenview
     okular
     irssi
@@ -127,7 +122,7 @@
 
     # debug
     strace
-    python38Packages.glances
+    bpftool
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -302,7 +297,7 @@
     enable = true;
     group = "netdata";
     python.enable = true;
-
+    python.extraPackages = ps: [ ps.docker ];
   };
   services.netdata.config = {
     global = {
@@ -314,11 +309,13 @@
       "timezone" = "Europe/Vienna";
     };
   };
-  services.netdata.python.extraPackages = ps: [ ps.docker ];
 
-  # firmware 
-  hardware.cpu.intel.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
+  # firmware
+  hardware = {
+    cpu.intel.updateMicrocode = true;
+    cpu.amd.updateMicrocode = false;
+    enableRedistributableFirmware = true;
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.stefan = {

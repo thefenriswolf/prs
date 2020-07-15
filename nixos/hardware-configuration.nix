@@ -11,7 +11,10 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" "kvm-intel" "vfio-pci" ];
   boot.blacklistedKernelModules = [ "nouveau" ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = [
+    pkgs.linuxPackages.bpftrace
+    pkgs.linuxPackages.bcc
+  ];
 
   fileSystems."/" = {
     device = "rpool/root/nixos";
@@ -41,8 +44,5 @@
   swapDevices = [{ device = "/dev/md127"; }];
 
   nix.maxJobs = lib.mkDefault 2;
-  # hardware.cpu.intel.updateMicrocode = true;
-  # hardware.cpu.amd.updateMicrocode = true;
-  # hardware.enableRedistributableFirmware = true;
   # virtualisation.hypervGuest.enable = true;
 }
