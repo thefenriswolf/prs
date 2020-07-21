@@ -1,7 +1,7 @@
-| Datum | Wallner             | Matze | Andi | Stefan |
-|-------+---------------------+-------+------+--------|
-|       | zi zi (cc)          |       |      |        |
-|       | ka sai (kaisa)      |       |      |        |
-|       | papatail (cocktail) |       |      |        |
-|       |                     |       |      |        |
-|       |                     |       |      |        |
+| Datum | Wallner             | Matze | Andi                     | Stefan |
+|-------+---------------------+-------+--------------------------+--------|
+|       | zi zi (cc)          |       | helkecipter (Helikopter) |        |
+|       | ka sai (kaisa)      |       |                          |        |
+|       | papatail (cocktail) |       |                          |        |
+|       |                     |       |                          |        |
+|       |                     |       |                          |        |
