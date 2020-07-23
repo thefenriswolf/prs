@@ -24,7 +24,7 @@
   boot.kernelParams = [
     "elevator=none"
     "intel_iommu=on"
-   # "amd_iommu=on"
+    # "amd_iommu=on"
   ];
 
   networking.hostName = "nixos";
@@ -51,83 +51,81 @@
 
   # Set your time zone.
   time.timeZone = "Europe/Vienna";
-  
+
   # env variables
   environment = {
-    variables = {
-      EDITOR = "emacs -nw";
-    };
+    variables = { EDITOR = "emacs -nw"; };
     # List packages installed in system profile.
     systemPackages = with pkgs; [
-    
-    # dl
-    wget
-    aria2
-    youtube-dl
-    ffsend
-    rclone
-    rsync
-    git
-    curl
-    android-file-transfer
 
-    # dev
-    go
-    tinygo
-    nixfmt
-    gh
-    hlint
-    kate
+      # dl
+      wget
+      aria2
+      youtube-dl
+      ffsend
+      rclone
+      rsync
+      git
+      gitAndTools.gh
+      curl
+      android-file-transfer
 
-    # reverse engineering
-    radare2-cutter
-    ghidra-bin
-    hexdump
+      # dev
+      go
+      tinygo
+      nixfmt
+      hlint
+      kate
 
-    # office
-    pandoc
-    unoconv
-    libreoffice
-    skanlite
-    thunderbird
-    openconnect
+      # reverse engineering
+      radare2-cutter
+      ghidra-bin
+      hexdump
 
-    # base cli
-    coreutils
-    man
-    file
-    traceroute
-    ranger
-    bash-completion
-    nix-bash-completions
-    direnv
-    emacs
-    nano
-    tree
-    parted
-    htop
-    tmux
-    networkmanager
+      # office
+      pandoc
+      unoconv
+      libreoffice
+      skanlite
+      thunderbird
+      openconnect
 
-    # multimedia
-    cmus
-    mpv
-    vlc
-    gwenview
-    okular
-    irssi
-    firefox
+      # base cli
+      coreutils
+      man
+      file
+      traceroute
+      ranger
+      bash-completion
+      nix-bash-completions
+      direnv
+      emacs
+      nano
+      tree
+      parted
+      htop
+      tmux
+      networkmanager
 
-    # virt
-    qemu
-    virglrenderer
-    virt-manager
-    sanoid
+      # multimedia
+      cmus
+      mpv
+      vlc
+      gwenview
+      okular
+      irssi
+      firefox
 
-    # debug
-    strace
-    bpftool
-   ];
+      # virt
+      qemu
+      virglrenderer
+      virt-manager
+      sanoid
+
+      # debug
+      strace
+      bpftool
+    ];
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -263,9 +261,7 @@
     enable = true;
     autoNumlock = true;
   };
-  services.xserver.desktopManager.plasma5 = {
-    enable = true;
-  };
+  services.xserver.desktopManager.plasma5 = { enable = true; };
 
   # flatpak support
   services.flatpak.enable = true;
@@ -315,7 +311,7 @@
     };
   };
 
-  # firmware
+  # firmware 
   hardware = {
     cpu.intel.updateMicrocode = true;
     cpu.amd.updateMicrocode = false;
