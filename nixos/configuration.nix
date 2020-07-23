@@ -51,11 +51,15 @@
 
   # Set your time zone.
   time.timeZone = "Europe/Vienna";
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-
+  
+  # env variables
+  environment = {
+    variables = {
+      EDITOR = "emacs -nw";
+    };
+    # List packages installed in system profile.
+    systemPackages = with pkgs; [
+    
     # dl
     wget
     aria2
@@ -123,7 +127,8 @@
     # debug
     strace
     bpftool
-  ];
+   ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
