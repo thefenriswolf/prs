@@ -7,14 +7,20 @@
   imports = [ ];
 
   boot.initrd.availableKernelModules =
-    [ "ata_piix" "floppy" "sd_mod" "sr_mod" "zfs" "nvme" ];
+    [ "ata_piix" "floppy" "ehci_pci" "sd_mod" "sr_mod" "xhci_pci" "usb_storage" "zfs" "nvme" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" "kvm-intel" "vfio-pci" ];
+  boot.kernelModules = [ "kvm-amd" "kvm-intel" "vfio-pci" "broadcom_sta" ];
   boot.blacklistedKernelModules = [ "nouveau" ];
   boot.extraModulePackages = [
     pkgs.linuxPackages.bpftrace
     pkgs.linuxPackages.bcc
   ];
+  
+  # reset netdata at boot
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    zfs rollback -r rpool/netdata@blank
+  '';
+
 
   fileSystems."/" = {
     device = "rpool/root/nixos";
@@ -43,6 +49,7 @@
 
   swapDevices = [{ device = "/dev/md127"; }];
 
-  nix.maxJobs = lib.mkDefault 2;
+  nix.maxJobs = lib.mkDefault 8;
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   # virtualisation.hypervGuest.enable = true;
 }
