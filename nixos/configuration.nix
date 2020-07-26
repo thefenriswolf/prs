@@ -9,26 +9,41 @@
     ./hardware-configuration.nix
   ];
 
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub = {
-    enable = true;
-    version = 2;
-    copyKernels = true;
-    configurationLimit = 20;
-    zfsSupport = true;
-    devices = [ "/dev/sdc" ];
+  #+ grub
+  #boot.loader.grub = {
+  #  enable = true;
+  #  version = 2;
+  #  copyKernels = true;
+  #  configurationLimit = 20;
+  #  zfsSupport = true;
+  #  devices = [ "/dev/sdc" ];
+  #};
+
+  #+ systemd-boot
+  boot = {
+    zfs.enableUnstable = true;
+
+    kernelParams = [
+      "elevator=none"
+      #"intel_iommu=on"
+      "amd_iommu=pt"
+      #"pci=nommconf"
+      "pci=noaer"
+      "ivrs_ioapic[32]=00:14.0"
+    ];
+
+    loader = {
+      systemd-boot.enable = true;
+      systemd-boot.configurationLimit = 20;
+      efi.canTouchEfiVariables = true;
+    };
+    hardwareScan = true;
+    cleanTmpDir = true;
+    supportedFilesystems = [ "zfs" "xfs" "ext4" ];
   };
 
-  boot.supportedFilesystems = [ "zfs" "xfs" "ext4" ];
-  boot.zfs.enableUnstable = true;
-  boot.kernelParams = [
-    "elevator=none"
-    "intel_iommu=on"
-    # "amd_iommu=on"
-  ];
-
-  networking.hostName = "nixos";
-  networking.hostId = "994d9128";
+  networking.hostName = "nixos-thinkpad";
+  networking.hostId = "0011fd30";
 
   networking.networkmanager = { enable = true; };
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -44,26 +59,30 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Select internationalisation properties.
+  #+ Select internationalisation properties.
   i18n = { defaultLocale = "de_AT.UTF-8"; };
   console.font = "Lat2-Terminus16";
   console.keyMap = "de";
 
-  # Set your time zone.
+  #+ Set your time zone.
   time.timeZone = "Europe/Vienna";
 
-  # env variables
+  #+ env variables
   environment = {
-    variables = { EDITOR = "emacs -nw"; };
+    # variables = { EDITOR = "emacs -nw"; };
+
     # List packages installed in system profile.
     systemPackages = with pkgs; [
 
       # dl
       wget
+      zsync
       aria2
       youtube-dl
+      kdeApplications.kio-extras
       ffsend
       rclone
+      tarsnap
       rsync
       git
       gitAndTools.gh
@@ -85,6 +104,11 @@
       # office
       pandoc
       unoconv
+      ark
+      kdeApplications.dolphin-plugins
+      plasma-integration
+      kdeApplications.spectacle
+      calibre
       libreoffice
       skanlite
       thunderbird
@@ -92,6 +116,7 @@
 
       # base cli
       coreutils
+      pciutils
       man
       file
       traceroute
@@ -99,7 +124,6 @@
       bash-completion
       nix-bash-completions
       direnv
-      emacs
       nano
       tree
       parted
@@ -110,11 +134,15 @@
       # multimedia
       cmus
       mpv
+      pavucontrol
+      pulseeffects
       vlc
+      audacity
       gwenview
       okular
       irssi
       firefox
+      brave
 
       # virt
       qemu
@@ -124,6 +152,7 @@
 
       # debug
       strace
+      tcpdump
       bpftool
     ];
   };
@@ -137,25 +166,25 @@
   #   pinentryFlavor = "gnome3";
   # };
 
-  # List services that you want to enable:
+  #+ List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
+  #+ Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
     hostKeys = [{
       bits = 4096;
-      path = "/etc/ssh/ssh_host_rsa_key";
+      path = "/etc/ssh/host_ssh_key";
       type = "rsa";
     }];
   };
 
-  # bpf kernel vm
+  #+ bpf kernel vm
   programs.bcc.enable = true;
 
-  # lvfs firmware updater
+  #+ lvfs firmware updater
   services.fwupd.enable = true;
 
-  # zfs
+  #+ zfs
   services.zfs.autoScrub = {
     enable = true;
     interval = "monthly";
@@ -166,7 +195,7 @@
     interval = "weekly";
   };
 
-  # sanoid zfs snapshots
+  #+ sanoid zfs snapshots
   services.sanoid = {
     enable = true;
     extraArgs = [ "--verbose" ];
@@ -204,6 +233,10 @@
       "use_template" = "custom";
       "dataset" = "rpool/root/nixos";
     };
+    "dev" = {
+      "use_template" = "custom";
+      "dataset" = "rpool/home/dev";
+    };
     "netdata" = {
       "use_template" = "custom";
       "dataset" = "rpool/netdata";
@@ -224,76 +257,91 @@
   # Or disable the firewall altogether.
   networking.firewall = { enable = true; };
 
-  # Enable CUPS to print documents.
+  #+ Enable CUPS to print documents.
   services.printing = {
     enable = true;
     drivers = [ pkgs.gutenprint pkgs.hplip ];
   };
 
-  # Enable sound.
+  #+ Enable sound.
   sound.enable = true;
-  hardware.pulseaudio = { enable = true; };
+  hardware.pulseaudio = {
+    enable = true;
+    package = pkgs.pulseaudioFull;
+  };
 
-  # Enable the X11 windowing system.
+  #+ Enable the X11 windowing system.
   services.xserver = {
     enable = true;
     layout = "at";
     xkbVariant = "nodeadkeys";
     xkbOptions = "eurosign:e";
-    videoDrivers = [ "nouveau" ];
+    videoDrivers = [ "amdgpu" ];
   };
 
-  # opengl
-  hardware.opengl = {
-    enable = true;
-    driSupport32Bit = true;
-    driSupport = true;
+  #+ opengl
+  hardware = {
+    u2f.enable = true;
+    bluetooth.enable = true;
+    bluetooth.package = pkgs.bluezFull;
+    bluetooth.powerOnBoot = true;
+    opengl.enable = true;
+    opengl.driSupport32Bit = true;
+    opengl.driSupport = true;
   };
 
-  # Enable touchpad support.
+  powerManagement.powertop.enable = true;
+  powerManagement.cpuFreqGovernor = "powersave";
+
+  #+ Enable touchpad support.
   services.xserver.libinput = {
     enable = true;
     horizontalScrolling = true;
   };
 
-  # Enable the KDE Desktop Environment.
+  #+ Enable the KDE Desktop Environment.
   services.xserver.displayManager.sddm = {
     enable = true;
+    enableHidpi = true;
     autoNumlock = true;
   };
   services.xserver.desktopManager.plasma5 = { enable = true; };
 
-  # flatpak support
+  #+ flatpak support
   services.flatpak.enable = true;
   xdg.portal.enable = true;
 
-  # steam
+  #+ steam
   hardware.steam-hardware = { enable = true; };
 
-  # emacs
+  #+ emacs
   services.emacs = {
     enable = true;
     install = true;
+    package = pkgs.emacs-nox;
     defaultEditor = true;
   };
 
-  # qemu
+  #+ lorri direnv manager
+  services.lorri.enable = true;
+
+  #+ qemu
   virtualisation.libvirtd = {
     enable = true;
     qemuOvmf = true;
   };
 
-  # containers
+  #+ containers
   virtualisation.docker = {
     enable = true;
     storageDriver = "zfs";
   };
 
-  # nix
+  #+ nix
   nixpkgs.config.allowUnfree = true;
   nix.useSandbox = true;
 
-  # netdata monitoring
+  #+ netdata monitoring
   services.netdata = {
     enable = true;
     group = "netdata";
@@ -311,14 +359,15 @@
     };
   };
 
-  # firmware 
+  #+ firmware 
   hardware = {
-    cpu.intel.updateMicrocode = true;
-    cpu.amd.updateMicrocode = false;
+    cpu.intel.updateMicrocode = false;
+    cpu.amd.updateMicrocode = true;
     enableRedistributableFirmware = true;
+    enableAllFirmware = false;
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  #+ Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.stefan = {
     isNormalUser = true;
     extraGroups = [
