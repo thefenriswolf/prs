@@ -154,6 +154,10 @@
       strace
       tcpdump
       bpftool
+
+      # utility
+      solaar
+      piper
     ];
   };
 
@@ -187,7 +191,7 @@
   #+ zfs
   services.zfs.autoScrub = {
     enable = true;
-    interval = "monthly";
+    interval = "weekly";
     pools = [ "rpool" ];
   };
   services.zfs.trim = {
@@ -359,7 +363,7 @@
     };
   };
 
-  #+ firmware 
+  #+ firmware
   hardware = {
     cpu.intel.updateMicrocode = false;
     cpu.amd.updateMicrocode = true;
