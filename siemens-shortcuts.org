@@ -1,0 +1,6 @@
+| Shortcut           | Key-Combination |
+|--------------------+-----------------|
+| easy grab and move | Shift           |
+| easy rotate        | Alt             |
+| export             | Ctrl + E        |
+|                    |                 |
